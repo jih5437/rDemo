@@ -1,0 +1,69 @@
+---
+title: "R Demo"
+author: "Jacob Hurley"
+output:
+  html_document:
+    df_print: paged
+---
+```{r}
+```
+# Install library (enter into console)
+```{r}
+#install.packages('ggplot2')
+#install.packages('dplyr')
+#install.packges('tidyr')
+```
+# Load our library
+```{r}
+library(ggplot2)
+library(dplyr)
+library(tidyr)
+```
+# Loading in our data
+Kaggle Data is used for our initial demonstration -> https://www.kaggle.com/datasets/mrmorj/dataset-of-songs-in-spotify
+
+Upload these files to the main project folder and call them here:
+```{r}
+#Loading our data into the R Global Environment
+genre <- read.csv("genres_v2.csv", header = TRUE)
+playlist <-read.csv("playlists.csv", header = TRUE)
+```
+# Head function
+```{r}
+head(genre)
+```
+# Tail Function
+```{r}
+tail(genre)
+```
+# Example of other data frame being selected
+```{r}
+head(playlist)
+```
+# 'str' used to return a list of objects and their structure
+```{r}
+str(genre)
+```
+# 'summary' gives us a brief summary of our data
+```{r}
+summary(genre)
+```
+# Brief graph demonstration using some r functions
+```{r}
+#Bar graphs
+barplot(table(genre$energy))
+```
+```{r}
+#a scatter plot between two variables
+plot(genre$duration_ms, genre$valence)# type = "l" for a line graph
+```
+
+# Graphing with ggplot and dplyr
+```{r}
+genre %>% #dplyr command to load in data aka 'piping'
+  mutate(duration_minutes = duration_ms/60000) %>% #more piping
+  ggplot(aes(x = duration_minutes, y = energy)) + 
+  ggtitle("Energy in a song vs Time (minutes)") +
+  geom_smooth() +
+  scale_x_continuous(breaks=seq(0,15,1))
+```
